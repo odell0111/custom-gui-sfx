@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CustomGuiSfx": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\Odell\\E-Learning\\Programming\\Topics\\C#\\Projects\\Custom GUI SFX\\Assets\\ForTesting\\CodeMonkey.rar"
+    }
+  }
+}

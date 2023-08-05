@@ -1,0 +1,87 @@
+﻿<Window Title="SFX Creation Progress Window"
+        x:Class="CustomGuiSfx.View.SFXCreationProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CustomGuiSfx.ViewModel"
+        xmlns:vc="clr-namespace:CustomGuiSfx.ViewModel.ValueConverters" 
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        Height="450" Width="520">
+
+  <Window.DataContext>
+    <vm:SFXCreationProgressWindowVM/>
+  </Window.DataContext>
+
+  <Window.Resources>
+    <vc:DoubleToVisibilityConverter x:Key="doubleToVisibilityConverter"/>
+  </Window.Resources>
+
+  <b:Interaction.Triggers>
+    <b:EventTrigger EventName="Loaded">
+      <b:CallMethodAction TargetObject="{Binding}" MethodName="OnWindowLoaded"/>
+    </b:EventTrigger>
+    <b:EventTrigger EventName="Closing">
+      <b:CallMethodAction TargetObject="{Binding}" MethodName="OnClosing"/>
+    </b:EventTrigger>
+  </b:Interaction.Triggers>
+
+  <!-- SFX Name, Location -->
+  <StackPanel Margin="5">
+
+    <WrapPanel>
+      <TextBlock Text="Creating "/>
+      <TextBlock Text="{Binding SfxName}"
+                 FontWeight="Bold"/>
+    </WrapPanel>
+    <WrapPanel>
+      <TextBlock Text="at "/>
+      <TextBlock TextWrapping="Wrap" 
+                 TextAlignment="Left" 
+                 FontWeight="Bold"
+                 Text="{Binding ArchiveDirectoryPath}"
+                 Style="{StaticResource hyperlinkTextBlockStyle}">
+        
+        <b:Interaction.Triggers>
+          <b:EventTrigger EventName="MouseLeftButtonDown">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="OnArchiveDirectoryPath_MouseLeftButtonDown"/>
+          </b:EventTrigger>
+        </b:Interaction.Triggers>
+      </TextBlock>
+    </WrapPanel>
+    
+    <!-- Progress Bar -->
+    <Grid Visibility="{Binding Progress, Converter={StaticResource doubleToVisibilityConverter}}"
+          Height="20" 
+          Margin="0, 5, 0, 0">
+
+      <ProgressBar Value="{Binding Progress}"
+                   Minimum="0"
+                   Maximum="1"/>
+      <TextBlock Text="{Binding Progress, StringFormat={}{0:P2}}" VerticalAlignment="Center"
+                 HorizontalAlignment="Center" 
+                 Foreground="Black" 
+                 FontWeight="Bold"
+                 />
+    </Grid>
+
+    <CheckBox HorizontalAlignment="Right" 
+              VerticalAlignment="Center"
+              VerticalContentAlignment="Center"
+              Padding="4"
+              FlowDirection="RightToLeft"
+              Content="Move Source Files To Recycle Bin"
+              IsChecked="{Binding MoveSourceFilesToRecycleBin, Mode=TwoWay}">
+      <CheckBox.Resources>
+        <Style TargetType="{x:Type Path}">
+          <Setter Property="FlowDirection" Value="LeftToRight" />
+        </Style>
+      </CheckBox.Resources>
+    </CheckBox>
+
+  </StackPanel>
+</Window>

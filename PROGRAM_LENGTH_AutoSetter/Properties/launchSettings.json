@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "PROGRAM_LENGTH_AutoSetter": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}

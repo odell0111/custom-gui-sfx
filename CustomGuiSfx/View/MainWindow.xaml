@@ -1,0 +1,361 @@
+﻿<Window Title="Custom GUI Self-Extracting Archive" 
+        x:Class="CustomGuiSfx.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CustomGuiSfx.ViewModel"
+        xmlns:vc="clr-namespace:CustomGuiSfx.ViewModel.ValueConverters" 
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+        gif:AnimationBehavior.AnimateInDesignMode="True"
+        mc:Ignorable="d"
+        HorizontalContentAlignment="Stretch"
+        ResizeMode="CanMinimize"
+        MaxWidth="1200"
+        MinWidth="600"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        IsEnabled="{Binding IsMainWindowEnabled}">
+
+  <Window.DataContext>
+    <vm:CustomGuiSfxVM/>
+  </Window.DataContext>
+
+  <Window.Resources>
+    <!-- Converters -->
+    <vc:DoubleToVisibilityConverter x:Key="doubleToVisibilityConverter"/>
+    <vc:StringToVisibilityConverter x:Key="stringToVisibilityConverter"/>
+    <vc:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
+    <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+
+    <Style TargetType="TextBlock" x:Key="hyperlinkTextBlockWhenHoveringStyle" BasedOn="{StaticResource hyperlinkTextBlockStyle}">
+      <Setter Property="Foreground" Value="Black"/>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Foreground" Value="CornflowerBlue"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Image" x:Key="displayImageStyle">
+      <Setter Property="MaxHeight" Value="400"/>
+      <Setter Property="Height" Value="{Binding DisplayImageHeight}"/>
+      <Setter Property="gif:AnimationBehavior.RepeatBehavior" Value="Forever"/>
+      <Setter Property="Margin" Value="3"/>
+    </Style>
+  </Window.Resources>
+
+  <b:Interaction.Triggers>
+    <b:EventTrigger EventName="Closing">
+      <b:CallMethodAction TargetObject="{Binding}" MethodName="OnClosing"/>
+    </b:EventTrigger>
+    <b:EventTrigger EventName="Loaded">
+      <b:CallMethodAction TargetObject="{Binding}" MethodName="OnWindowLoaded"/>
+    </b:EventTrigger>
+  </b:Interaction.Triggers>
+
+  <StackPanel HorizontalAlignment="Stretch"
+              VerticalAlignment="Top"
+              Margin="20">
+
+    <!-- Display Images -->
+    <Grid HorizontalAlignment="Center"
+          Visibility="{Binding ShowDisplayImageGrid, Converter={StaticResource boolToVisibilityConverter}}">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <!-- First Display Image -->
+      <Image x:Name="firstDisplayImage"
+           Style="{StaticResource displayImageStyle}"/>
+
+      <!-- Second Display Image -->
+      <Image x:Name="secondDisplayImage"
+           Grid.Column="1"
+           Style="{StaticResource displayImageStyle}"/>
+
+      <!-- Third Display Image -->
+      <Image x:Name="thirdDisplayImage"
+           Grid.Column="2"
+           Style="{StaticResource displayImageStyle}"/>
+    </Grid>
+
+
+    <!-- Display Name -->
+    <TextBlock FontSize="20"
+               Text="{Binding DisplayName}"
+               Style="{DynamicResource hyperlinkTextBlockWhenHoveringStyle}">
+      
+      <b:Interaction.Triggers>
+        <b:EventTrigger EventName="MouseLeftButtonDown">
+          <b:CallMethodAction TargetObject="{Binding}" MethodName="OnDisplayNameTextBlock_MouseLeftButtonDown"/>
+        </b:EventTrigger>
+      </b:Interaction.Triggers>
+    </TextBlock>
+
+    <!-- Checkboxes -->
+    <Grid Margin="0, 5, 0, 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+
+      <CheckBox Content="Extract Archive"
+                IsChecked="{Binding ExtractArchive, Mode=TwoWay}"
+                IsEnabled="{Binding IsExtractArchiveCheckboxEnabled}"/>
+      <CheckBox Content="Use Windows Console"
+                Grid.Row="1" 
+                IsChecked="{Binding UseWindowsConsole, Mode=TwoWay}">
+
+        <b:Interaction.Triggers>
+          <b:EventTrigger EventName="Unchecked">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="OnUseWindowConsoleUnchecked"/>
+          </b:EventTrigger>
+        </b:Interaction.Triggers>
+      </CheckBox>
+      <CheckBox Content="Close After Extract"
+                Grid.Column="1" 
+                IsChecked="{Binding CloseAfterExtract, Mode=TwoWay}"/>
+      <CheckBox Content="Delete After Close"
+                Grid.Column="1" 
+                Grid.Row="1" 
+                Margin="5, 0, 0, 0"
+                IsChecked="{Binding DeleteAfterClose, Mode=TwoWay}"/>
+    </Grid>
+
+    <!-- Extraction Path -->
+    <Grid Margin="0, 5, 0, 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width=".2*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Extraction Path TextBox -->
+      <TextBox Margin="2"
+               Text="{Binding ExtractionPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               Foreground="{Binding ExtractionPathForeground}"/>
+
+      <!-- Browse Path Button -->
+      <Button Command="{Binding BrowsePathCommand}"
+              Margin="2" 
+              Grid.Column="1" 
+              Content="Browse"/>
+    </Grid>
+
+    <!-- Custom Arguments -->
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBox Margin="2" 
+               IsEnabled="{Binding SetCustomArguments}" 
+               ToolTip="Command Line Arguments"
+               Text="{Binding CustomArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+      <CheckBox
+                ToolTip="Set Custom Arguments"
+                VerticalAlignment="Center"
+                Margin="2" Grid.Column="1" 
+                IsChecked="{Binding SetCustomArguments, Mode=TwoWay}"/>
+    </Grid>
+
+    <!-- [Extract/Send Arguments] Button -->
+    <Button Command="{Binding ExtractCommand}"
+            Content="{Binding ExtractButtonLabel}"/>
+    <!--IsEnabled="{Binding ExtractButtonCanExecute}"/>-->
+
+    <!-- Extraction Progress -->
+    <!--  -->
+    <Grid Visibility="{Binding Progress, Converter={StaticResource doubleToVisibilityConverter}}"
+          Height="20" 
+          Margin="0, 5, 0, 0">
+
+      <ProgressBar Value="{Binding Progress}"
+                   Minimum="0"
+                   Maximum="1"/>
+      <TextBlock Text="{Binding Progress, StringFormat={}{0:P2}}" VerticalAlignment="Center"
+                 HorizontalAlignment="Center" 
+                 Foreground="Black" 
+                 FontWeight="Bold"
+                 />
+    </Grid>
+
+    <!-- Comment -->
+    <TextBox Text="{Binding Comment}"
+             TextAlignment="Center"
+             TextWrapping="Wrap"
+             Margin="5"
+             IsReadOnly="True"
+             BorderThickness="0"
+             MaxLines="3"
+             VerticalScrollBarVisibility="Auto"
+             IsEnabled="{Binding Comment, Converter={StaticResource stringToVisibilityConverter}}">
+
+      <b:Interaction.Triggers>
+        <b:EventTrigger EventName="MouseLeftButtonDown">
+          <b:CallMethodAction TargetObject="{Binding}" MethodName="OnCommentTextBox_MouseLeftButtonDown"/>
+        </b:EventTrigger>
+      </b:Interaction.Triggers>
+    </TextBox>
+    <!-- Links -->
+    <Grid Margin="0, 7, 0, 0" HorizontalAlignment="Center" Visibility="{Binding IsLinkAreaVisible, Converter={StaticResource boolToVisibilityConverter}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Text="{Binding Link1Label}" 
+                 Margin="15, 0"
+                 Style="{StaticResource hyperlinkTextBlockStyle}"
+                 Visibility="{Binding Link1Label, Converter={StaticResource stringToVisibilityConverter}}">
+        
+              <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonDown">
+                  <b:CallMethodAction TargetObject="{Binding}" MethodName="OnLink1TextBlock_MouseLeftButtonDown"/>
+                </b:EventTrigger>
+              </b:Interaction.Triggers>
+      </TextBlock>
+      <TextBlock Text="{Binding Link2Label}"
+                 Grid.Column="1"
+                 Margin="15, 0"
+                 Style="{StaticResource hyperlinkTextBlockStyle}"
+                 Visibility="{Binding Link2Label, Converter={StaticResource stringToVisibilityConverter}}">
+        
+              <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonDown">
+                  <b:CallMethodAction TargetObject="{Binding}" MethodName="OnLink2TextBlock_MouseLeftButtonDown"/>
+                </b:EventTrigger>
+              </b:Interaction.Triggers>
+      </TextBlock>
+      <TextBlock Text="{Binding Link3Label}"
+                 Grid.Column="2"
+                 Margin="15, 0"
+                 Style="{StaticResource hyperlinkTextBlockStyle}"
+                 Visibility="{Binding Link3Label, Converter={StaticResource stringToVisibilityConverter}}">
+        
+              <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonDown">
+                  <b:CallMethodAction TargetObject="{Binding}" MethodName="OnLink3TextBlock_MouseLeftButtonDown"/>
+                </b:EventTrigger>
+              </b:Interaction.Triggers>
+      </TextBlock>
+    </Grid>
+
+    <!-- Output -->
+    <TextBox Margin="0, 5, 0, 0"
+             TextWrapping="Wrap"
+             VerticalScrollBarVisibility="Auto" 
+             IsReadOnly="True"
+             MaxHeight="{Binding OutputMaxHeight}"
+             Text="{Binding Output}"
+             Visibility="{Binding Output, Converter={StaticResource stringToVisibilityConverter}}">
+
+      <b:Interaction.Triggers>
+        <b:EventTrigger EventName="TextChanged">
+          <b:CallMethodAction TargetObject="{Binding}" MethodName="OnOutputTextBox_TextChanged"/>
+        </b:EventTrigger>
+      </b:Interaction.Triggers>
+    </TextBox>
+
+    <!-- Clear Output Button - Program Version - Developer Instagram Link -->
+    <Grid 
+          Margin="0, 3, 0, 0">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+
+      <!-- Clear Output Button -->
+      <Button Content="Clear"
+              HorizontalAlignment="Left"
+              Height="15"
+              FontSize="10"
+              VerticalAlignment="Center"
+              FontWeight="SemiBold"
+              Padding="2,0"
+              Command="{Binding ClearOutputCommand}"
+              Visibility="{Binding Output, Converter={StaticResource stringToVisibilityConverter}}"/>
+      <!-- Program Version - Developer Instagram Link -->
+      <WrapPanel HorizontalAlignment="Right" Grid.Column="2">
+        <WrapPanel VerticalAlignment="Bottom">
+          <WrapPanel VerticalAlignment="Bottom">
+            <TextBlock FontWeight="Bold" 
+                   FontSize="10" 
+                   Text="v"/>
+
+            <TextBlock FontWeight="Bold" 
+                   FontSize="10" 
+                   Text="{Binding Version}"/>
+
+            <TextBlock FontWeight="Bold" 
+                   FontSize="10" 
+                   Text=" by "/>
+          </WrapPanel>
+
+          <TextBlock VerticalAlignment="Bottom" 
+                    FontWeight="ExtraBold" 
+                    FontSize="10" 
+                    Text="Odell"
+                    Style="{DynamicResource hyperlinkTextBlockWhenHoveringStyle}">
+        
+              <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonDown">
+                  <b:CallMethodAction TargetObject="{Binding}" MethodName="OnOdellTextBlock_MouseLeftButtonDown"/>
+                </b:EventTrigger>
+              </b:Interaction.Triggers>
+          </TextBlock>
+        </WrapPanel>
+
+        <!-- GitHub Logo -->
+        <Border Cursor="Hand" 
+              Grid.Column="1"
+              Height="20" Width="20"
+              Margin="5,0,0,0" 
+              Background="White" 
+              RenderTransformOrigin="0.5,0.5">
+
+          <Path Fill="Black" Data="M32,4.2C16.7,4.2,4.2,16.6,4.2,31.9c0,12.3,8,22.7,19,26.4c1.4,0.3,1.9-0.6,1.9-1.3c0-0.7,0-2.4,0-4.7
+	            c-7.7,1.7-9.4-3.7-9.4-3.7c-1.3-3.2-3.1-4.1-3.1-4.1c-2.5-1.7,0.2-1.7,0.2-1.7c2.8,0.2,4.3,2.9,4.3,2.9c2.5,4.2,6.5,3,8.1,2.3
+	            c0.3-1.8,1-3,1.8-3.7c-6.2-0.7-12.7-3.1-12.7-13.7c0-3,1.1-5.5,2.9-7.5c-0.3-0.7-1.2-3.5,0.3-7.4c0,0,2.3-0.7,7.6,2.8
+	            c2.2-0.6,4.6-0.9,7-0.9c2.4,0,4.7,0.3,7,0.9c5.3-3.6,7.6-2.8,7.6-2.8c1.5,3.8,0.6,6.6,0.3,7.4c1.8,1.9,2.9,4.4,2.9,7.5
+	            c0,10.7-6.5,13-12.7,13.7c1,0.9,1.9,2.6,1.9,5.1c0,3.7,0,6.7,0,7.6c0,0.7,0.5,1.6,1.9,1.3c11-3.7,19-14.1,19-26.4
+	            C59.8,16.6,47.3,4.2,32,4.2z" Stretch="Fill"/>
+          <Border.Style>
+            <Style TargetType="Border">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="RenderTransform">
+                    <Setter.Value>
+                      <TransformGroup>
+                        <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                      </TransformGroup>
+                    </Setter.Value>
+                  </Setter>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </Border.Style>
+
+          <b:Interaction.Triggers>
+            <b:EventTrigger EventName="MouseLeftButtonDown">
+              <b:CallMethodAction TargetObject="{Binding}" MethodName="OnGitHubLogo_MouseLeftButtonDown"/>
+            </b:EventTrigger>
+          </b:Interaction.Triggers>
+        </Border>
+      </WrapPanel>
+
+    </Grid>
+  </StackPanel>
+</Window>

@@ -2,13 +2,15 @@
 Custom GUI SFX is a free and open source Windows tool to wrap an archive file with a size of ~4GB or less in a Windows executable along with custom information, some links, and images, so you will be able to share your files in a more beautiful and personalized way, in addition, you won't need to have any tool installed to unzip the archives because this program makes use of 7-Zip internally (www.7-zip.org)
 
 ## Screenshots
-![](screenshots/Screenshot.png)<br/><br/>
-![](screenshots/Screenshot%20-%20Extracting.png)<br/><br/>
-<img src="screenshots/04.%20GIF.gif?raw=true" width="583px"><br/><br/>
-![](screenshots/03.%20Creation%20Progress%20Window.png)<br/><br/>
+<div align="center">
+	<img src="Screenshots/01.%20Screenshot.png"><br/><br/>
+	<img src="Screenshots/02.%20Screenshot%20-%20Extracting.png"><br/><br/>
+	<img src="Screenshots/03.%20GIF.gif?raw=true"> <br/><br/>
+	<img src="Screenshots/04.%20Creation%20Progress%20Window.png"> <br/><br/>
+</div>
 
 ## YouTube Video Tutorial
-[Custom GUI SFX - Share your files in a more beautiful and personalized way](https://www.youtube.com/watch?v=)
+[Custom GUI Self-Extracting Archive - Share your files in a more beautiful and personalized way](https://www.youtube.com/watch?v=qlR_LbXq8Zo)
 
 ## Why does the archive size have to be ~4GB or less?
 I mention the archive because it might be the largest file, but precisely the one that cannot be equal to or larger than 4GB is the final executable, the SFX…
@@ -21,7 +23,7 @@ So, when you merge all of your source files (the archive, display images, and th
 ## Creating a Custom Graphical Self-Extracting archive
 You have two ways of doing this.
 
-The easiest one is to install the program and send the source files to the program as arguments via the Send To context menu, as shown in the [YouTube video tutorial](https://www.youtube.com/watch?v=).
+The easiest one is to install the program and send the source files to the program as arguments via the Send To context menu, as shown in the [YouTube video tutorial](https://www.youtube.com/watch?v=qlR_LbXq8Zo).
 
 The other one is to use command line utilities such as cat for Unix systems or copy for Windows.
 
@@ -44,11 +46,28 @@ To create a configuration template, open the File Explorer Context Menu and clic
 
 As of the latest release, the configuration file size must be less than or equal to 5KB.
 
-About configuration file entries:
-* Any Link entry without its label entry will be ignored
-* To ignore an entry remove the = sign or set no value
-* FileToExecute requires a relative path to the file that you want to run after the extraction is done. The relative path should be based on the extraction path
-* Comment entry must be always the last entry
+* About configuration file entries:
+	* Any Link entry without its label entry will be ignored
+	* To ignore an entry remove the = sign or set no value
+	* FileToExecute requires a relative path to the file that you want to run after the extraction is done. The relative path should be based on the extraction path
+	* Comment entry must be always the last entry
+	* When creating the SFX via the Send To context menu, there’s no need to specify any ‘size’ entry or ArchiveExtension entry. However, if you are creating the SFX using a command line utility or any other way, it is mandatory to specify the aforementioned entries. The ArchiveExtension entry will not cause an error if it’s not specified, but if the user chooses to extract the archive file, the program may not be able to recognize the file extension and, consequently, the extracted file may have no extension
+
+## Command Line Feature - Uninstalling the program
+At present, the command line feature is quite limited, but it is necessary for uninstalling the program. To do this, pass -u or --uninstall to any custom GUI SFX executable, even if it has no archive merged with it. Similarly, if you want to install the program, pass -i or --install, however this last switch is not so necessary because the program can be installed by opening it normally.
+
+<br/>
+<div align="center">
+	<img src="Screenshots/05.%20Command%20Line%20Feature.jpg"><br/><br/>
+</div>
+
+## Changing program settings
+Program settings are located at “%AppData%/OGM/Custom GUI SFX/settings.json”. You can change them at any time using any text editor. If VerboseMessageBox is set to true and an error occurs during program execution, a more detailed message will be displayed. If you encounter any errors, please set this entry to true, reproduce the error again, take a screenshot of the error message displayed, and send it to me on my [Instagram](https://instagram.com/odell0111)
+
+<br/>
+<div align="center">
+	<img src="Screenshots/06.%20Program%20Settings.jpg"><br/><br/>
+</div>
 
 ## Notes for developers
 Publish the project with the 'PublishProfile.pubxml' profile to get a single file, make sure to increase the project version.

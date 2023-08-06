@@ -1,4 +1,4 @@
-# Custom GUI SFX - [Download Latest Release](https://)
+# Custom GUI SFX - [Download Latest Release [951 KB]](https://github.com/odell0111/custom-gui-sfx/releases/download/latest/CustomGuiSfx-win64-n6.0-fd.zip)
 Custom GUI SFX is a free and open source Windows tool to wrap an archive file with a size of ~4GB or less in a Windows executable along with custom information, some links, and images, so you will be able to share your files in a more beautiful and personalized way, in addition, you won't need to have any tool installed to unzip the archives because this program makes use of 7-Zip internally (www.7-zip.org)
 
 ## Screenshots
@@ -11,7 +11,7 @@ Custom GUI SFX is a free and open source Windows tool to wrap an archive file wi
 [Custom GUI SFX - Share your files in a more beautiful and personalized way](https://www.youtube.com/watch?v=)
 
 ## Why does the archive size have to be ~4GB or less?
-I mention the archive because it might be the largest file, but the one that cannot be equal to or larger than 4GB is the final executable, the SFX…
+I mention the archive because it might be the largest file, but precisely the one that cannot be equal to or larger than 4GB is the final executable, the SFX…
 
 (...)[The executable "image" (the code/data as loaded in memory) of a Win64 file is limited in size to 2GB. This is because the AMD64/EM64T processors use relative addressing for most instructions, and the relative address is kept in a dword. A dword is only capable of holding a relative value of ±2GB](http://www.godevtool.com/GoasmHelp/64bits.htm#diffe)(...)
 ...a signed dword has a range of 2,147,483,647 and an unsigned dword has a range of 4,294,967,295 [4GB - 1B].

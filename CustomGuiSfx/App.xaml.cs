@@ -280,8 +280,7 @@ public partial class App : Application
 						FileName = "cmd.exe",
 						Arguments = $@"/c timeout /t 2 /nobreak & rmdir ""{programInstallationRootPath}"" /s /q & pause",
 						CreateNoWindow = true,
-						WindowStyle = ProcessWindowStyle.Hidden,
-						WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+						WindowStyle = ProcessWindowStyle.Hidden
 					});
 				};
 

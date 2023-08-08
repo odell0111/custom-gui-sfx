@@ -19,6 +19,7 @@ public static class Configuration
 	public static string? Link3Label { get; set; }
 	public static string? Link3 { get; set; }
 	public static string? FileToExecute { get; set; }
+	public static bool ExecuteFileInHiddenWindow { get; set; } = false;
 	public static int FirstDisplayImageSize { get; set; }
 	public static int SecondDisplayImageSize { get; set; }
 	public static int ThirdDisplayImageSize { get; set; }
@@ -40,11 +41,10 @@ public static class Configuration
 			var value = prop.GetValue(null, null);
 			if (value is null)
 				sb.Append(Environment.NewLine);
-			// else if the property has a value different from its default value
 			else
 			{
 				var hasDefaultValue = value.Equals(Activator.CreateInstance(prop.PropertyType));
-				if (!hasDefaultValue)
+				if (!hasDefaultValue || prop.PropertyType.Equals(typeof(bool)))
 					sb.AppendLine(value.ToString());
 				else
 					sb.Append(Environment.NewLine);

@@ -272,22 +272,15 @@ public partial class CustomGuiSfxVM : ObservableObject
 			_ = sb.AppendLine(Environment.NewLine);
 
 			_ = sb.AppendLine(":::: Parsed Configuration Content ::::");
-			_ = sb.AppendLine($"{nameof(Configuration.DisplayName)}: {Configuration.DisplayName}");
-			_ = sb.AppendLine($"{nameof(Configuration.DisplayNameLink)}: {Configuration.DisplayNameLink}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link1Label)}: {Configuration.Link1Label}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link1)}: {Configuration.Link1}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link2Label)}: {Configuration.Link2Label}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link2)}: {Configuration.Link2}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link3Label)}: {Configuration.Link3Label}");
-			_ = sb.AppendLine($"{nameof(Configuration.Link3)}: {Configuration.Link3}");
-			_ = sb.AppendLine($"{nameof(Configuration.ArchiveExtension)}: {Configuration.ArchiveExtension}");
-			_ = sb.AppendLine($"{nameof(Configuration.FileToExecute)}: {Configuration.FileToExecute}");
-			_ = sb.AppendLine($"{nameof(Configuration.FirstDisplayImageSize)}: {Configuration.FirstDisplayImageSize}");
-			_ = sb.AppendLine($"{nameof(Configuration.SecondDisplayImageSize)}: {Configuration.SecondDisplayImageSize}");
-			_ = sb.AppendLine($"{nameof(Configuration.ThirdDisplayImageSize)}: {Configuration.ThirdDisplayImageSize}");
-			_ = sb.AppendLine($"{nameof(Configuration.DisplayImageHeightToShowOnUI)}: {Configuration.DisplayImageHeightToShowOnUI}");
-			_ = sb.AppendLine($"{nameof(Configuration.ArchiveSize)}: {Configuration.ArchiveSize}");
-			_ = sb.AppendLine($"{nameof(Configuration.Comment)}:\n{Configuration.Comment}\n");
+			foreach(var prop in typeof(Configuration).GetProperties())
+			{
+				var firstPart = prop.Name + ":";
+				if (prop.Name.Equals(nameof(Configuration.Comment)))
+					firstPart += "\n";
+
+				_ = sb.AppendLine($"{firstPart} {prop.GetValue(null, null)}");
+			}
+			_ = sb.AppendLine();
 
 			_ = sb.AppendLine(":::: 7z.exe ::::");
 			_ = sb.AppendLine("FullName: " + sevenZipProgram.FullName);
@@ -428,7 +421,7 @@ public partial class CustomGuiSfxVM : ObservableObject
 					Progress = 0;
 					Log("Done");
 				}
-				else
+				else // extract the contents of the archive
 				{
 					// *** programPath is targetFilePath because 7-Zip (7z.exe) is able to locate the merged archive and unzip it 
 					await sevenZipProgram.Unzip(programFullName, ExtractionPath);
@@ -441,7 +434,9 @@ public partial class CustomGuiSfxVM : ObservableObject
 							Process.Start(new ProcessStartInfo()
 							{
 								UseShellExecute = true,
-								FileName = fullPath
+								FileName = fullPath,
+								WorkingDirectory = ExtractionPath,
+								WindowStyle = Configuration.ExecuteFileInHiddenWindow ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal
 							});
 						}
 					}

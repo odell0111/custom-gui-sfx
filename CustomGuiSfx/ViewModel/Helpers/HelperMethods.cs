@@ -137,6 +137,7 @@ public static class HelperMethods
 						ArchiveExtension = ".";
 					ArchiveExtension += value; break;
 				case "FileToExecute": FileToExecute = value; break;
+				case "ExecuteFileInHiddenWindow": if (bool.TryParse(value, out var v0)) ExecuteFileInHiddenWindow = v0; break;
 				case "FirstDisplayImageSize": if (int.TryParse(value, out var v1)) FirstDisplayImageSize = v1; break;
 				case "SecondDisplayImageSize": if (int.TryParse(value, out var v2)) SecondDisplayImageSize = v2; break;
 				case "ThirdDisplayImageSize": if (int.TryParse(value, out var v3)) ThirdDisplayImageSize = v3; break;

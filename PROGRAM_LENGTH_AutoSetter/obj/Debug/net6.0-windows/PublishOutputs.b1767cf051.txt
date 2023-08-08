@@ -1,5 +1,0 @@
-D:\Odell\E-Learning\Programming\Topics\C#\Projects\Custom_GUI_SFX\PROGRAM_LENGTH_AutoSetter\bin\Debug\net6.0-windows\publish\PROGRAM_LENGTH_AutoSetter.exe
-D:\Odell\E-Learning\Programming\Topics\C#\Projects\Custom_GUI_SFX\PROGRAM_LENGTH_AutoSetter\bin\Debug\net6.0-windows\publish\PROGRAM_LENGTH_AutoSetter.dll
-D:\Odell\E-Learning\Programming\Topics\C#\Projects\Custom_GUI_SFX\PROGRAM_LENGTH_AutoSetter\bin\Debug\net6.0-windows\publish\PROGRAM_LENGTH_AutoSetter.deps.json
-D:\Odell\E-Learning\Programming\Topics\C#\Projects\Custom_GUI_SFX\PROGRAM_LENGTH_AutoSetter\bin\Debug\net6.0-windows\publish\PROGRAM_LENGTH_AutoSetter.runtimeconfig.json
-D:\Odell\E-Learning\Programming\Topics\C#\Projects\Custom_GUI_SFX\PROGRAM_LENGTH_AutoSetter\bin\Debug\net6.0-windows\publish\PROGRAM_LENGTH_AutoSetter.pdb

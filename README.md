@@ -15,15 +15,15 @@ Custom GUI SFX is a free and open source Windows tool to wrap an archive file wi
 ## Why does the archive size have to be ~4GB or less?
 I mention the archive because it might be the largest file, but precisely the one that cannot be equal to or larger than 4GB is the final executable, the SFX…
 
-(...)[The executable "image" (the code/data as loaded in memory) of a Win64 file is limited in size to 2GB. This is because the AMD64/EM64T processors use relative addressing for most instructions, and the relative address is kept in a dword. A dword is only capable of holding a relative value of ±2GB](http://www.godevtool.com/GoasmHelp/64bits.htm#diffe)(...)
-...a signed dword has a range of 2,147,483,647 and an unsigned dword has a range of 4,294,967,295 [4GB - 1B].
+(...) [The executable "image" (the code/data as loaded in memory) of a Win64 file is limited in size to 2GB. This is because the AMD64/EM64T processors use relative addressing for most instructions, and the relative address is kept in a dword. A dword is only capable of holding a relative value of ±2GB](http://www.godevtool.com/GoasmHelp/64bits.htm#diffe) (...)
+...a signed dword has a range of ±2,147,483,647 and an unsigned dword has a range of 4,294,967,295 [4GB - 1B].
 
 So, when you merge all of your source files (the archive, display images, and the configuration file) with the program executable, make sure that the final size of the executable is less than 4GB. This applies if you are creating your SFX from the command line. If you are creating it from the program, via the Send To context menu, an error will pop up and the SFX will not be created.
 
 ## Creating a Custom Graphical Self-Extracting archive
 You have two ways of doing this.
 
-The easiest one is to install the program and send the source files to the program as arguments via the Send To context menu, as shown in the [YouTube video tutorial](https://www.youtube.com/watch?v=qlR_LbXq8Zo).
+The easiest one is to install the program and send the source files to the program as arguments via the Send To context menu, as shown in the [YouTube video tutorial](https://www.youtube.com/watch?v=qlR_LbXq8Zo). To install the program just open any custom GUI SFX executable, even if it has no archive merged with it, or open it with the switch -i.
 
 The other one is to use command line utilities such as cat for Unix systems or copy for Windows.
 
@@ -42,19 +42,20 @@ When merging with any command line utility or any other method, keep in mind tha
 ## About the configuration file
 The configuration file is the text file used to customize the SFX. If this file is not passed when creating the SFX via Send To context menu, the program will create a default one. However, if you are creating the SFX through command line utilities or any other method and forget to merge this file with the main executable, the SFX will throw an error when opening.
 
-To create a configuration template, open the File Explorer Context Menu and click on New Configuration Template. This action will generate a config.txt template file that will automatically open in your default text editor.
+To create a configuration template, once the program is installed, open the File Explorer Context Menu and click on New Configuration Template. This action will generate a config.txt template file that will automatically open in your default text editor.
 
 As of the latest release, the configuration file size must be less than or equal to 5KB.
 
 * About configuration file entries:
-	* Any Link entry without its label entry will be ignored
+	* All 'size' entries are in bytes
+	* Any 'link' entry without its label entry will be ignored
 	* To ignore an entry remove the = sign or set no value
 	* FileToExecute requires a relative path to the file that you want to run after the extraction is done. The relative path should be based on the extraction path
 	* Comment entry must be always the last entry
-	* When creating the SFX via the Send To context menu, there’s no need to specify any ‘size’ entry or ArchiveExtension entry. However, if you are creating the SFX using a command line utility or any other way, it is mandatory to specify the aforementioned entries. The ArchiveExtension entry will not cause an error if it’s not specified, but if the user chooses to extract the archive file, the program may not be able to recognize the file extension and, consequently, the extracted file may have no extension
+	* When creating the SFX via the Send To context menu, there's no need to specify any 'size' entry or ArchiveExtension entry. However, if you are creating the SFX using a command line utility or any other way, it is mandatory to specify the 'size' entries. The ArchiveExtension entry will not cause an error if it's not specified, but if the user chooses to extract the archive file, the program may not be able to recognize the file extension and, consequently, the extracted file may have no extension
 
 ## Command Line Feature - Uninstalling the program
-At present, the command line feature is quite limited, but it is necessary for uninstalling the program. To do this, pass -u or --uninstall to any custom GUI SFX executable, even if it has no archive merged with it. Similarly, if you want to install the program, pass -i or --install, however this last switch is not so necessary because the program can be installed by opening it normally.
+At present, the command line feature is quite limited, but it is necessary for uninstalling the program. To do this, pass -u or --uninstall to any custom GUI SFX executable, even if it has no archive merged with it. Similarly, if you want to install the program, pass -i or --install. This can be useful if you want to perform a downgrade. Otherwise, it may not be necessary because the program can be installed by opening it normally.
 
 <br/>
 <div align="center">

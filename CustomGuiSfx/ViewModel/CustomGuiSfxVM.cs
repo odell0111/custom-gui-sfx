@@ -20,6 +20,7 @@ using XamlAnimatedGif;
 using static CustomGuiSfx.App;
 using static CustomGuiSfx.View.MainWindow;
 using static CustomGuiSfx.ViewModel.Helpers.HelperMethods;
+using System.Linq;
 
 namespace CustomGuiSfx.ViewModel;
 
@@ -435,7 +436,7 @@ public partial class CustomGuiSfxVM : ObservableObject
 							{
 								UseShellExecute = true,
 								FileName = fullPath,
-								WorkingDirectory = ExtractionPath,
+								WorkingDirectory = (Directory.GetParent(fullPath) ?? new DirectoryInfo(Directory.GetDirectoryRoot(fullPath))).FullName,
 								WindowStyle = Configuration.ExecuteFileInHiddenWindow ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal
 							});
 						}

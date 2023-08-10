@@ -72,3 +72,8 @@ Program settings are located at “%AppData%/OGM/Custom GUI SFX/settings.json”
 
 ## Notes for developers
 Publish the project with the 'PublishProfile.pubxml' profile to get a single file, make sure to increase the project version.
+
+## Visit my other repos
+**[Account Manager](https://github.com/odell0111/account-manager)** </br>
+**[NFS Most Wanted Trainer](https://github.com/odell0111/nfs-mostwanted-trainer)**</br>
+**[Blur Trainer](https://github.com/odell0111/blur-trainer)**</br>

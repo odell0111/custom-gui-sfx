@@ -1,3 +1,5 @@
+![](https://img.shields.io/github/downloads/odell0111/custom-gui-sfx/total.svg?style=plastic&label=Downloads)
+
 # Custom GUI SFX - [Download Latest Release [951 KB]](https://github.com/odell0111/custom-gui-sfx/releases/download/latest/CustomGuiSfx-win64-n6.0-fd.zip)
 Custom GUI SFX is a free and open source Windows tool to wrap an archive file with a size of ~4GB or less in a Windows executable along with custom information, some links, and images, so you will be able to share your files in a more beautiful and personalized way, in addition, you won't need to have any tool installed to unzip the archives because this program makes use of 7-Zip internally (www.7-zip.org)
 

@@ -75,8 +75,27 @@ Program settings are located at “%AppData%/OGM/Custom GUI SFX/settings.json”
 ## Notes for developers
 Publish the project with the 'PublishProfile.pubxml' profile to get a single file, make sure to increase the project version.
 
-<div align="center">	
-	
+## Donate
+
+[//]: # ([![Donate]&#40;https://app.oxapay.com/media/btn/light-btn.png&#41;]&#40;https://oxapay.com/donate/42319117&#41;)
+
+<a href="https://oxapay.com/donate/42319117" target="_blank"> <img src="https://app.oxapay.com/media/btn/light-btn.png" style="width: 200px"> </a>
+
+### TON
+```
+UQAtE6g_gxHgDoD_rzR_lHqBN9zbR9367U1Mxu21F7c3CPI5
+```
+### Bitcoin
+```
+bc1qvnu237er6rxt8cazze6lx3dme66n60gjwgh2mx
+```
+#### Speed Lightning Address username
+```
+bytechanger@speed.app
+```
+
+<div align="center">
+
 ## Visit my other repos
 		
 **[Account Manager](https://github.com/odell0111/account-manager)** </br>
